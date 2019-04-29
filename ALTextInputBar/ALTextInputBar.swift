@@ -8,63 +8,63 @@
 
 import UIKit
 
-open class ALTextInputBar: UIView, ALTextViewDelegate {
+@objc open class ALTextInputBar: UIView, ALTextViewDelegate {
     
-    public weak var delegate: ALTextInputBarDelegate?
-    public weak var keyboardObserver: ALKeyboardObservingView?
+    @objc public weak var delegate: ALTextInputBarDelegate?
+    @objc public weak var keyboardObserver: ALKeyboardObservingView?
     
     // If true, display a border around the text view
-    public var showTextViewBorder = false {
+    @objc public var showTextViewBorder = false {
         didSet {
             textViewBorderView.isHidden = !showTextViewBorder
         }
     }
     
     // TextView border insets
-    public var textViewBorderPadding: UIEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    @objc public var textViewBorderPadding: UIEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     
     // TextView corner radius
-    public var textViewCornerRadius: CGFloat = 4 {
+    @objc public var textViewCornerRadius: CGFloat = 4 {
         didSet {
             textViewBorderView.layer.cornerRadius = textViewCornerRadius
         }
     }
     
     // TextView border width
-    public var textViewBorderWidth: CGFloat = 1 {
+    @objc public var textViewBorderWidth: CGFloat = 1 {
         didSet {
             textViewBorderView.layer.borderWidth = textViewBorderWidth
         }
     }
     
     // TextView border color
-    public var textViewBorderColor = UIColor(white: 0.9, alpha: 1) {
+    @objc public var textViewBorderColor = UIColor(white: 0.9, alpha: 1) {
         didSet {
             textViewBorderView.layer.borderColor = textViewBorderColor.cgColor
         }
     }
     
     // TextView background color
-    public var textViewBackgroundColor = UIColor.white {
+    @objc public var textViewBackgroundColor = UIColor.white {
         didSet {
             textViewBorderView.backgroundColor = textViewBackgroundColor
         }
     }
     
     /// Used for the intrinsic content size for autolayout
-    public var defaultHeight: CGFloat = 44
+    @objc public var defaultHeight: CGFloat = 44
     
     /// If true the right button will always be visible else it will only show when there is text in the text view
-    public var alwaysShowRightButton = false
+    @objc public var alwaysShowRightButton = false
     
     /// The horizontal padding between the view edges and its subviews
-    public var horizontalPadding: CGFloat = 10
+    @objc public var horizontalPadding: CGFloat = 10
     
     /// The horizontal spacing between subviews
-    public var horizontalSpacing: CGFloat = 5
+    @objc public var horizontalSpacing: CGFloat = 5
     
     /// Convenience set and retrieve the text view text
-    public var text: String! {
+    @objc public var text: String! {
         get {
             return textView.text
         }
@@ -79,7 +79,7 @@ open class ALTextInputBar: UIView, ALTextViewDelegate {
     
     If this view is nil nothing will be displayed, and the text view will fill the space
     */
-    public var leftView: UIView? {
+    @objc public var leftView: UIView? {
         willSet(newValue) {
             if let view = leftView {
                 view.removeFromSuperview()
@@ -98,7 +98,7 @@ open class ALTextInputBar: UIView, ALTextViewDelegate {
     If this view is nil nothing will be displayed, and the text view will fill the space
     If alwaysShowRightButton is false this view will animate in from the right when the text view has content
     */
-    public var rightView: UIView? {
+    @objc public var rightView: UIView? {
         willSet(newValue) {
             if let view = rightView {
                 view.removeFromSuperview()
@@ -112,7 +112,7 @@ open class ALTextInputBar: UIView, ALTextViewDelegate {
     }
     
     /// The text view instance
-    public let textView: ALTextView = {
+    @objc public let textView: ALTextView = {
         
         let _textView = ALTextView()
         
@@ -140,12 +140,12 @@ open class ALTextInputBar: UIView, ALTextViewDelegate {
     
     private var textViewBorderView: UIView!
         
-    override public init(frame: CGRect) {
+    @objc override public init(frame: CGRect) {
         super.init(frame: frame)
         commonInit()
     }
     
-    required public init?(coder aDecoder: NSCoder) {
+    @objc required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         commonInit()
     }
@@ -177,11 +177,11 @@ open class ALTextInputBar: UIView, ALTextViewDelegate {
     
     // MARK: - View positioning and layout -
 
-    override open var intrinsicContentSize: CGSize {
+    @objc override open var intrinsicContentSize: CGSize {
         return CGSize(width: UIViewNoIntrinsicMetric, height: defaultHeight)
     }
     
-    override open func layoutSubviews() {
+    @objc override open func layoutSubviews() {
         super.layoutSubviews()
         
         let size = frame.size
@@ -244,7 +244,7 @@ open class ALTextInputBar: UIView, ALTextViewDelegate {
         textViewBorderView.frame = UIEdgeInsetsInsetRect(textView.frame, offset)
     }
     
-    public func updateViews(animated: Bool) {
+    @objc public func updateViews(animated: Bool) {
         if animated {
             UIView.animate(withDuration: 0.2) {
                 self.setNeedsLayout()
@@ -259,7 +259,7 @@ open class ALTextInputBar: UIView, ALTextViewDelegate {
     
     // MARK: - ALTextViewDelegate -
     
-    public final func textViewHeightChanged(textView: ALTextView, newHeight: CGFloat) {
+    @objc public final func textViewHeightChanged(textView: ALTextView, newHeight: CGFloat) {
         
         let padding = defaultHeight - textView.minimumHeight
         let height = padding + newHeight
@@ -283,7 +283,7 @@ open class ALTextInputBar: UIView, ALTextViewDelegate {
         textView.frame.size.height = newHeight
     }
     
-    public final func textViewDidChange(_ textView: UITextView) {
+    @objc public final func textViewDidChange(_ textView: UITextView) {
         
         self.textView.textViewDidChange()
 
@@ -300,7 +300,7 @@ open class ALTextInputBar: UIView, ALTextViewDelegate {
         }
     }
     
-    public func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+    @objc public func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
         var beginEditing: Bool = true
         if let d = delegate, let m = d.textViewShouldBeginEditing {
             beginEditing = m(self.textView)
@@ -308,7 +308,7 @@ open class ALTextInputBar: UIView, ALTextViewDelegate {
         return beginEditing
     }
     
-    public func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
+    @objc public func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
         var endEditing = true
         if let d = delegate, let m = d.textViewShouldEndEditing {
             endEditing = m(self.textView)
@@ -316,25 +316,25 @@ open class ALTextInputBar: UIView, ALTextViewDelegate {
         return endEditing
     }
     
-    public func textViewDidBeginEditing(_ textView: UITextView) {
+    @objc public func textViewDidBeginEditing(_ textView: UITextView) {
         if let d = delegate, let m = d.textViewDidBeginEditing {
             m(self.textView)
         }
     }
     
-    public func textViewDidEndEditing(_ textView: UITextView) {
+    @objc public func textViewDidEndEditing(_ textView: UITextView) {
         if let d = delegate, let m = d.textViewDidEndEditing {
             m(self.textView)
         }
     }
     
-    public func textViewDidChangeSelection(_ textView: UITextView) {
+    @objc public func textViewDidChangeSelection(_ textView: UITextView) {
         if let d = delegate, let m = d.textViewDidChangeSelection {
             m(self.textView)
         }
     }
     
-    public func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+    @objc public func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         var shouldChange = true
         if let d = delegate, let m = d.textView {
             shouldChange = m(self.textView, range, text)

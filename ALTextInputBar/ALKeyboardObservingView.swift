@@ -10,18 +10,18 @@ import UIKit
 
 public let ALKeyboardFrameDidChangeNotification = "ALKeyboardFrameDidChangeNotification"
 
-public class ALKeyboardObservingView: UIView {
+@objc public class ALKeyboardObservingView: UIView {
 
     private weak var observedView: UIView?
     private var defaultHeight: CGFloat = 44
     
-    override public var intrinsicContentSize: CGSize {
+    @objc override public var intrinsicContentSize: CGSize {
         return CGSize(width: UIViewNoIntrinsicMetric, height: defaultHeight)
     }
 
 
     
-    public override func willMove(toSuperview newSuperview: UIView?) {
+    @objc public override func willMove(toSuperview newSuperview: UIView?) {
         
         removeKeyboardObserver()
         if let _newSuperview = newSuperview {
@@ -31,7 +31,7 @@ public class ALKeyboardObservingView: UIView {
         super.willMove(toSuperview: newSuperview)
     }
 
-    public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+    @objc public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if object as? NSObject == superview && keyPath == keyboardHandlingKeyPath(), let s = superview {
 
             let keyboardFrame = s.frame
@@ -50,7 +50,7 @@ public class ALKeyboardObservingView: UIView {
         }
     }
     
-    public func updateHeight(height: CGFloat) {
+    @objc public func updateHeight(height: CGFloat) {
         for constraint in constraints {
             if constraint.firstAttribute == NSLayoutAttribute.height && constraint.firstItem as! NSObject == self {
                 constraint.constant = height < defaultHeight ? defaultHeight : height

@@ -8,6 +8,7 @@
 
 import UIKit
 
+@objc
 public protocol ALTextViewDelegate: UITextViewDelegate {
     
     /**
@@ -18,18 +19,19 @@ public protocol ALTextViewDelegate: UITextViewDelegate {
     - parameter textView: The text view that triggered the size change
     - parameter newHeight: The ideal height for the new text view
     */
-    func textViewHeightChanged(textView: ALTextView, newHeight: CGFloat)
+    @objc func textViewHeightChanged(textView: ALTextView, newHeight: CGFloat)
 }
 
+@objc
 public class ALTextView: UITextView {
     
-    override public var font: UIFont? {
+    @objc override public var font: UIFont? {
         didSet {
             placeholderLabel.font = font
         }
     }
     
-    override public var contentSize: CGSize {
+    @objc override public var contentSize: CGSize {
         didSet {
             updateSize()
         }
@@ -37,21 +39,21 @@ public class ALTextView: UITextView {
     
     /// The delegate object to be notified if the content size will change 
     /// The delegate should update handle text view layout
-    public weak var textViewDelegate: ALTextViewDelegate? {
+    @objc public weak var textViewDelegate: ALTextViewDelegate? {
         didSet {
             delegate = textViewDelegate
         }
     }
     
     /// The text that appears as a placeholder when the text view is empty
-    public var placeholder: String = "" {
+    @objc public var placeholder: String = "" {
         didSet {
             placeholderLabel.text = placeholder
         }
     }
     
     /// The color of the placeholder text
-    public var placeholderColor: UIColor! {
+    @objc public var placeholderColor: UIColor! {
         get {
             return placeholderLabel.textColor
         }
@@ -76,7 +78,7 @@ public class ALTextView: UITextView {
         return _placeholderLabel
     }()
 
-    public override var textAlignment: NSTextAlignment {
+    @objc public override var textAlignment: NSTextAlignment {
         get {
             return super.textAlignment
         }
@@ -87,20 +89,20 @@ public class ALTextView: UITextView {
     }
 
     /// The maximum number of lines that will be shown before the text view will scroll. 0 = no limit
-    public var maxNumberOfLines: CGFloat = 0
-    public var expectedHeight: CGFloat = 0
-    public var minimumHeight: CGFloat {
+    @objc public var maxNumberOfLines: CGFloat = 0
+    @objc public var expectedHeight: CGFloat = 0
+    @objc public var minimumHeight: CGFloat {
         get {
             return ceil(font!.lineHeight) + textContainerInset.top + textContainerInset.bottom
         }
     }
     
-    override public init(frame: CGRect, textContainer: NSTextContainer?) {
+    @objc override public init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: frame, textContainer: textContainer)
         commonInit()
     }
     
-    required public init?(coder aDecoder: NSCoder) {
+    @objc required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         commonInit()
     }
